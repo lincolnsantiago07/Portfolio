@@ -1,0 +1,114 @@
+.section {
+  padding: 10 0 50px 0;
+  position: relative;
+  background: radial-gradient(1200px 600px at 50% -10%, #3b2c6e33, transparent 60%), #0d0d0d;
+}
+
+.box {
+  background: rgba(21, 21, 21, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 64px;
+  text-align: center;
+  padding: 60px 50px;
+  margin-top: -60px;
+}
+
+.title {
+  color: #ffeaea;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.description {
+  color: #B8B8B8;
+  font-size: 18px;
+  letter-spacing: 0.8px;
+  line-height: 1.5em;
+  margin: 14px 0 75px 0;
+}
+
+.slider {
+  width: 80%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ====== novos estilos p/ o gauge ====== */
+.item {
+  display: flex;
+  justify-content: center;
+}
+
+.gaugeWrap {
+  text-align: center;
+}
+
+.gauge {
+  display: block;
+  margin: 0 auto 8px auto;
+}
+
+.percent {
+  font-weight: 800;
+  font-size: 28px;
+  fill: #fff;            /* cor do texto dentro do SVG */
+}
+
+.itemLabel {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #cfcfcf;
+}
+
+/* imagem decorativa de fundo */
+.bgLeft {
+  top: 28%;
+  position: absolute;
+  bottom: 0;
+  width: 40%;
+  z-index: -4;
+}
+
+/* ====== botões de navegação ====== */
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.navBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.navBtn svg {
+  color: #fff;
+  width: 22px;
+  height: 22px;
+}
+
+.left  { left: 8px;  }
+.right { right: 8px; }
+
+/* Responsivo */
+@media (max-width: 576px) {
+  .percent { font-size: 24px; }
+  .itemLabel { font-size: 15px; }
+}

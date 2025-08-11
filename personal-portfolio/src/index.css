@@ -1,0 +1,43 @@
+body {
+  font-weight: 400;
+  overflow-x: hidden;
+  position: relative;
+  background-color: #121212;
+  color: #fff;
+  font-family: 'Funnel Display', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
+               'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* ===== Reset & Global ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 75px; /* compensa a navbar fixa */
+}
+
+
+img { max-width: 100%; height: auto; }
+a { text-decoration: none; color: inherit; }
+button { border: 0; background: transparent; cursor: pointer; }
+input:focus, textarea:focus, select:focus { outline: none; }
+
+/* Helpers simples (ainda globais) */
+p.success { color: #2ecc71; }
+p.danger  { color: #e74c3c; }
+
+/* Container largo em telas muito grandes (se você usa <main><Container/>) */
+@media (min-width:1700px) {
+  main .container {
+    max-width: 100%;
+    padding: 0 150px;
+  }
+}

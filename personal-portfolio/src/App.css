@@ -1,0 +1,64 @@
+
+  #root {
+    isolation: isolate;            /* evita vazamento de efeitos/z-index */
+  }
+   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+   html {
+    scroll-behavior: smooth; 
+    scroll-padding-top: 75px;
+    max-width: var(--vw, 100vw);   /* nunca passa da viewport */
+    overflow-x: hidden;         
+   }
+   
+   body {
+     font-weight: 400;
+     overflow-x: hidden;
+     position: relative;
+     background-color: #121212;
+     color: #fff;
+     font-family: "Funnel Display", "Karla", "Delius", "PT Serif", sans-serif;
+   }
+   
+   img { width: 100%; height: auto; display: block; }
+   a { text-decoration: none; color: inherit; }
+   a:hover { text-decoration: none; }
+   
+   button { border: 0; background: transparent; }
+   input:focus, textarea:focus, select:focus { outline: none; }
+   
+   /* Layout amplo opcional (se você realmente usa esse espaçamento): */
+   @media (min-width:1700px) {
+     main .container { max-width: 100%; padding: 0 150px; }
+   }
+   
+   
+   /* =========================
+      3) Utilitários Globais
+      ========================= */
+   p.success { color: #2ecc71; }
+   p.danger  { color: #e74c3c; }
+   
+   /* (Opcional) utilitário de ocultar para acessibilidade
+   .visually-hidden {
+     position: absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+     overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+   } */
+   
+   
+   /* =========================
+      4) Overrides leves de terceiros
+      ========================= */
+   /* Mantém o visual "ativo" das tabs do react-bootstrap sem mexer nos módulos */
+   .nav-pills .nav-link.active {
+     border: 1px solid #fff;
+   }
+
+   img, svg, video, canvas { max-width: 100%; height: auto; display: block; }
+
+  .page,.section-safe {
+    width: min(100%, var(--vw, 100vw));
+    margin: 0 auto;
+    overflow-x: clip;              /* corta qualquer 1–2px de bleed */
+  }
+  

@@ -1,0 +1,177 @@
+/* ===== Barra fixa e transições ===== */
+.navbar {
+  padding: 18px 0;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%;
+  z-index: 9999;
+  transition:
+    background-color .3s ease-in-out,
+    backdrop-filter .3s ease-in-out,
+    padding .3s ease-in-out;
+  /* evita bleed de 1–2px causado por blur/transform */
+  overflow-x: hidden;       /* fallback */
+  overflow-x: clip;
+}
+
+.navbarScrolled {
+  padding: 10px 0;
+  background: rgba(21, 21, 21, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== Brand / Logo ===== */
+.brand { flex: 0 0 auto; width: auto; }
+.brandImg {
+  width: clamp(48px, 8vw, 96px);
+  height: auto;
+  transition: width .3s ease-in-out;
+}
+.navbarScrolled .brandImg {
+  width: clamp(44px, 7vw, 75px);
+}
+
+/* ===== Links ===== */
+.navLink {
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: .8px;
+  padding: 0 18px !important; /* menor para caber melhor */
+  font-size: 18px;
+  opacity: .75;
+}
+.navLink:hover,
+.navLinkActive { color: rgba(138, 99, 245, 0.801); opacity: 1; }
+
+/* ===== Área direita (ícones + CTA) ===== */
+.navbarText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ===== Ícones sociais ===== */
+.social {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 12px;
+  position: relative;
+}
+.socialLink {
+  width: 40px;
+  height: 40px;
+  background: rgba(217, 217, 217, 0.1);
+  display: inline-flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+.socialLink::before {
+  content: "";
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: .3s ease-in-out;
+}
+.socialLink:hover::before { transform: scale(1); }
+.socialImg {
+  width: 60%;
+  z-index: 1;
+  transition: .3s ease-in-out;
+}
+.socialLink:hover .socialImg {
+  filter: brightness(0) saturate(100%) invert(0%) sepia(7%) saturate(98%) hue-rotate(346deg) brightness(95%) contrast(86%);
+}
+
+/* ===== Botão CTA ===== */
+.ctaBtn {
+  font-weight: 700;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 14px 20px;
+  font-size: 16px;
+  margin-left: 12px;
+  position: relative;
+  background: transparent;
+  transition: .3s ease-in-out;
+}
+.ctaBtn span { position: relative; z-index: 1; }
+.ctaBtn::before {
+  content: "";
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  background-color: #fff;
+  left: 0; top: 0;
+  z-index: 0;
+  transition: .3s ease-in-out;
+}
+.ctaBtn:hover { color: #121212; }
+.ctaBtn:hover::before { width: 100%; }
+
+/* ===== Toggler (hambúrguer) ===== */
+.toggler { border: none !important; box-shadow: none !important; }
+.toggler:focus, .toggler:active { outline: none; box-shadow: none; }
+.togglerIcon {
+  width: 24px;
+  height: 17px;
+  position: relative;
+  border-bottom: 2px solid #fff;
+  transition: all 300ms linear;
+  top: -2px;
+}
+.togglerIcon::before,
+.togglerIcon::after {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background-color: #fff;
+  position: absolute;
+  left: 0;
+  transition: all 300ms linear;
+}
+.togglerIcon::before { top: 0; }
+.togglerIcon::after  { top: 8px; }
+.toggler[aria-expanded="true"] .togglerIcon { border-color: transparent; }
+.toggler[aria-expanded="true"] .togglerIcon::after { transform: rotate(45deg); }
+.toggler[aria-expanded="true"] .togglerIcon::before { transform: translateY(8px) rotate(-45deg); }
+
+/* ===== Mobile / colapso (< lg) ===== */
+@media (max-width: 991.98px) {
+  /* estiliza o collapse do Bootstrap (CSS Modules → :global) */
+  :global(.navbar-collapse) {
+    background: rgba(21,21,21,.85);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+
+  .navLink {
+    padding: 10px 0 !important;
+    font-size: 16px;
+  }
+
+  .navbarText {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .social { margin-left: 0; }
+  .ctaBtn { margin-left: 0; width: 100%; text-align: center; }
+}
+
+/* ===== Telas muito pequenas ===== */
+@media (max-width: 575.98px) {
+  .brandImg { width: clamp(40px, 12vw, 64px); }
+}
