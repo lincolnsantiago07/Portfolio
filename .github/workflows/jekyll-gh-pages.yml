@@ -33,6 +33,8 @@ jobs:
 
       - name: Build (client)
         working-directory: personal-portfolio
+        env: 
+          CI: false
         run: npm run build
 
       - name: Disable Jekyll

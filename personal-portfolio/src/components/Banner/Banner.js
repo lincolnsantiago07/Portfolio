@@ -7,6 +7,10 @@ import TrackVisibility from "react-on-screen";
 import { HashLink } from "react-router-hash-link";
 import styles from "./Banner.module.css";
 
+// ---- typewriter usando setTimeout (estável) ----
+const toRotate = ["Java Developer", "CyberSecurity", "Web Developer", "Web Designer", "UI/UX Designer"];
+const period = 2000;
+
 export const Banner = () => {
   // ---- typewriter state ----
   const [loopNum, setLoopNum] = useState(0);
@@ -14,10 +18,6 @@ export const Banner = () => {
   const [text, setText] = useState("");
   const [delta, setDelta] = useState(300 - Math.random() * 100);
 
-  const toRotate = ["Java Developer", "CyberSecurity", "Web Developer", "Web Designer", "UI/UX Designer"];
-  const period = 2000;
-
-  // ---- typewriter usando setTimeout (estável) ----
   useEffect(() => {
     const timer = setTimeout(() => {
       const i = loopNum % toRotate.length;
