@@ -1,5 +1,6 @@
 {
   "name": "personal-portfolio",
+  "homepage": "https://lincolnsantiago07.github.io/Portfolio",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
