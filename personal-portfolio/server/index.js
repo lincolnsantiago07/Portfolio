@@ -25,20 +25,29 @@ app.use(express.json({ limit: '32kb' }));
 // HPP: evita poluição de parâmetros (?a=1&a=2)
 app.use(hpp());
 
-// CORS restrito (suporte a múltiplas origens via .env: ORIGIN1,ORIGIN2)
-const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:3000')
+/* ----------------------------- CORS ----------------------------- */
+// Suporte a múltiplas origens via .env: ORIGIN1,ORIGIN2
+const ALLOWED = (process.env.CLIENT_ORIGIN || '')
   .split(',')
-  .map(s => s.trim());
-app.use(cors({
-  origin: function (origin, cb) {
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-    return cb(new Error('Not allowed by CORS'));
-  },
-  methods: ['POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-}));
+  .map(s => s.trim())
+  .filter(Boolean); // ex.: "https://lincolnsantiago07.github.io,http://localhost:3000"
 
-// Rate limit + Slow down na rota /contact
+const corsOptions = {
+  origin(origin, cb) {
+    if (!origin) return cb(null, true);                // curl/healthcheck etc.
+    if (ALLOWED.includes(origin)) return cb(null, true);
+    return cb(null, false);                            // nega CORS sem lançar erro (evita 500 no preflight)
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+// responde pré-flight (OPTIONS) para qualquer rota
+app.options('*', cors(corsOptions));
+
+/* --------------- Rate limit + Slow down na /contact -------------- */
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 10,
@@ -48,7 +57,8 @@ const limiter = rateLimit({
 const speedLimiter = slowDown({
   windowMs: 60 * 1000,
   delayAfter: 3,
-  delayMs: 250
+  delayMs: () => 250,           // nova semântica da v2
+  validate: { delayMs: false }  // silencia o warning
 });
 
 /* --------------------- Utilidades de sanitização --------------------- */
@@ -65,22 +75,29 @@ function sanitize(s = '', max = 2000) {
 
 /* ------------------------ Nodemailer (Gmail) ------------------------ */
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    pool: true,
-    maxConnections: 1,
-    maxMessages: 50,
-    rateDelta: 60_000,
-    rateLimit: 15,
-    socketTimeout: 20_000,       // encerra se travar
-    connectionTimeout: 10_000,
-    greetingTimeout: 10_000
-  });
+  // pode usar service:'gmail' também, mas host/porta deixa explícito
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  pool: true,
+  maxConnections: 1,
+  maxMessages: 50,
+  rateDelta: 60_000,
+  rateLimit: 15,
+  socketTimeout: 20_000,
+  connectionTimeout: 10_000,
+  greetingTimeout: 10_000
+});
 
 // Valida conexão SMTP na subida (log não fatal)
 transporter.verify()
   .then(() => console.log('[SMTP] OK'))
   .catch((e) => console.error('[SMTP] Falha na verificação:', e.message));
+
+/* -------------------------- Healthchecks -------------------------- */
+app.get('/', (_req, res) => res.type('text').send('OK'));
+app.get('/ping', (_req, res) => res.json({ ok: true }));
 
 /* ---------------------------- Endpoint ---------------------------- */
 app.post('/contact', speedLimiter, limiter, async (req, res) => {
@@ -99,9 +116,9 @@ app.post('/contact', speedLimiter, limiter, async (req, res) => {
     }
 
     const normalizedEmail = validator.normalizeEmail(String(email), { gmail_remove_dots: false });
-        if (!normalizedEmail || !validator.isEmail(normalizedEmail)) {
-        return res.status(400).json({ code: 400, message: 'Invalid e-mail .' });
-        }
+    if (!normalizedEmail || !validator.isEmail(normalizedEmail)) {
+      return res.status(400).json({ code: 400, message: 'Invalid e-mail .' });
+    }
 
     // Limites de tamanho para evitar abuso
     const safe = {
@@ -137,8 +154,8 @@ ${safe.message}`;
 
     await transporter.sendMail({
       from: process.env.FROM_EMAIL || `"${process.env.FROM_NAME || 'Portfolio – Lincoln'}" <${process.env.SMTP_USER}>`,
-      to: process.env.TO_EMAIL || process.env.SMTP_USER,  // recebe na mesma conta
-      replyTo: safe.email,                                 // responder vai para o visitante
+      to: process.env.TO_EMAIL || process.env.SMTP_USER,
+      replyTo: safe.email,
       subject: subj,
       text,
       html
@@ -153,4 +170,4 @@ ${safe.message}`;
 
 /* --------------------------- Inicialização --------------------------- */
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
