@@ -27,9 +27,10 @@ export const Contact = () => {
 
   // Em produção: mesma origem ("/contact"). Em dev: localhost:5000
   const API_URL =
-    process.env.NODE_ENV === "production"
-      ? ""
-      : (process.env.REACT_APP_API_URL || "http://localhost:5000");
+    process.env.REACT_APP_API_URL
+    ?? (window.location.hostname.endsWith("github.io")
+          ? "https://portfolio-jwuj.onrender.com"   // sua API no Render (ajuste o host se mudou)
+          : "http://localhost:5000");               // dev local
 
   const onFormUpdate = (key, value) => {
     setFormDetails(prev => ({ ...prev, [key]: value }));
