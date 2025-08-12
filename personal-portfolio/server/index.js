@@ -36,8 +36,14 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// ✅ Express 5: use rota explícita, não '*'
-app.options('/contact', cors(corsOptions));
+
+// responde rapidamente QUALQUER preflight com 204
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 /* --------------- Rate limit + Slow down na /contact -------------- */
 const limiter = rateLimit({
