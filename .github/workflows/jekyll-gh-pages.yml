@@ -33,7 +33,8 @@ jobs:
 
       - name: Build (client)
         working-directory: personal-portfolio
-        env: 
+        env:
+          REACT_APP_API_URL: https://portfolio-jwuj.onrender.com
           CI: false
         run: npm run build
 
