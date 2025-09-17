@@ -1,24 +1,64 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { Container, Row, Col, Form, InputGroup } from "react-bootstrap";
 import { ProjectCard } from "../ProjectCard/ProjectCard";
-import projImg1 from "../../assets/img/project-img1.png";
-import projImg2 from "../../assets/img/project-img2.png";
-import projImg3 from "../../assets/img/project-img3.png";
-import colorSharp2 from "../../assets/img/color-sharp2.png";
 import "animate.css";
 import TrackVisibility from "react-on-screen";
 import Fuse from "fuse.js";
 import { LuSearch, LuX, LuTag, LuCode, LuServer, LuLayers, LuShield, LuFlaskConical, LuSparkles } from "react-icons/lu";
 import styles from "./Projects.module.css";
+import colorSharp2 from "../../assets/img/color-sharp2.png";
+
+/** Project images import */
+
+import pokemon from "../../assets/img/pokemon.png";
+import naruto from "../../assets/img/naruto.png";
+import food from "../../assets/img/food.png";
+import premier from "../../assets/img/premier.png";
+import people from "../../assets/img/people.png";
 
 /** >>> 1) DADOS E OPTIONS FORA DO COMPONENTE (referência estável) */
 const PROJECTS = [
-  { title: "Landing Travel", description: "Travel page", imgUrl: projImg1, category: "Front-end", tags: ["landing", "ui", "react"], repoUrl: "https://github.com/lincolnsantiago07" },
-  { title: "CRM API", description: "API for CRM", imgUrl: projImg2, category: "Back-end", tags: ["node", "express", "rest"], repoUrl: "https://github.com/lincolnsantiago07"  },
-  { title: "Dashboard SaaS", description: "Complete panel", imgUrl: projImg3, category: "Fullstack", tags: ["nextjs", "charts", "auth"], repoUrl: "https://github.com/lincolnsantiago07"  },
-  { title: "Pentest Notes", description: "Anotações de testes", imgUrl: projImg1, category: "Cybersecurity", tags: ["owasp", "pentest", "notes"], repoUrl: "https://github.com/lincolnsantiago07"  },
-  { title: "A/B Testing Lab", description: "Test notes", imgUrl: projImg2, category: "Studies", tags: ["experiments", "stats", "ab"], repoUrl: "https://github.com/lincolnsantiago07"  },
-  { title: "E-commerce UI", description: "Online store", imgUrl: projImg3, category: "Front-end", tags: ["ui", "cart", "responsive"], repoUrl: "https://github.com/lincolnsantiago07" },
+
+  { //#1
+    title: "PokeCards", 
+    description: "Fullstack app & Datascraping", 
+    imgUrl: pokemon, 
+    category: "Fullstack", 
+    tags: ["spring boot", "api", "rest", "java", "postgresql", "crud", "data scraping", "pokemon", "full stack", "vite"], 
+    repoUrl: "https://github.com/lincolnsantiago07/PokeCards" 
+  },
+  { //#2
+    title: "Naruto CRUD", 
+    description: "CRUD & API Rest", 
+    imgUrl: naruto, 
+    category: "Back-end", 
+    tags: ["spring boot", "api", "rest", "java", "postgresql", "crud", "naruto"], 
+    repoUrl: "https://github.com/lincolnsantiago07/CadastroDeNinjas"  
+  },
+  { //#3
+    title: "Food CRUD", 
+    description: "CRUD & API Rest", 
+    imgUrl: food, 
+    category: "Back-end", 
+    tags: ["spring boot", "api", "rest", "java", "postgresql", "crud", "food", "mvc"], 
+    repoUrl: "https://github.com/lincolnsantiago07/Cadastro-comida-spring-boot"  
+  },
+  { //#5
+    title: "People CRUD", 
+    description: "CRUD & API Rest", 
+    imgUrl: people, 
+    category: "Back-end", 
+    tags: ["spring boot", "api", "rest", "java", "postgresql", "crud", "people"], 
+    repoUrl: "https://github.com/lincolnsantiago07/cadastro-usuario-spring-boot" 
+  },
+  { //#6
+    title: "Premier League", 
+    description: "Fullstack app & Datascraping", 
+    imgUrl: premier, 
+    category: "Fullstack", 
+    tags: ["spring boot", "api", "rest", "java", "postgresql", "crud", "data scraping", "premier", "full stack"],
+    repoUrl: "https://github.com/lincolnsantiago07/Premier-League-Website" 
+  },
 ];
 
 const CATEGORIES = ["All", "Front-end", "Back-end", "Fullstack", "Cybersecurity", "Studies"];
@@ -30,8 +70,8 @@ const FUSE_OPTIONS = {
   ignoreLocation: true,
   keys: [
     { name: "title", weight: 0.55 },
-    { name: "description", weight: 0.15 },
     { name: "category", weight: 0.2 },
+    { name: "description", weight: 0.15 },
     { name: "tags", weight: 0.1 },
   ]
 };
@@ -154,7 +194,7 @@ export const Projects = () => {
                 <div className={isVisible ? "animate__animated animate__fadeIn" : ""}>
                   <h2 className={styles.title}>Projects</h2>
                   <p className={styles.description}>
-                   Explore my work by category or use the search function :)
+                    Explore my work by category or use the search function :)
                   </p>
 
                   {/* 🔎 Busca + chips */}

@@ -216,6 +216,7 @@
   padding: 4px 10px;
   border-radius: 999px;
 }
+
 .resetInline{
   background: transparent;
   border: none;
@@ -226,11 +227,32 @@
 }
 
 /* grid ajustes */
-.gridRow { row-gap: 28px; }
+.gridRow { row-gap: 2px; }
 
 /* Estado vazio */
 .emptyState {
   text-align: center;
   color: #B8B8B8;
   margin-top: 20px;
+}
+
+/* === Thumbs do grid com tamanho fixo e corte central === */
+.gridRow img {
+  width: 100%;
+  /* mantém todas as imagens no mesmo formato (16:9). Troque se quiser 4:3, 3:2 etc. */
+  aspect-ratio: 12 / 9;
+  height: auto;            /* altura derivada do aspect-ratio */
+  object-fit: cover;       /* corta o que sobrar sem distorcer */
+  object-position: center; /* centraliza o corte */
+  display: block;          /* elimina gaps de inline-img */
+  border-radius: 16px;     /* opcional: acompanha o visual dos cards */
+}
+
+/* Fallback para navegadores sem suporte a aspect-ratio */
+@supports not (aspect-ratio: 1 / 1) {
+  .gridRow img {
+    height: 220px;   /* ajuste fino conforme seu card */
+    width: 100%;
+    object-fit: cover;
+  }
 }
